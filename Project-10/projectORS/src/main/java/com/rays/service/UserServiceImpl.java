@@ -39,7 +39,7 @@ public class UserServiceImpl extends BaseServiceImpl<UserDTO, UserDAOInt> implem
 
 	@Autowired
 	UserDAOInt userDAO;
-
+	
 	/**
 	 * Find user by login id
 	 */
@@ -56,9 +56,7 @@ public class UserServiceImpl extends BaseServiceImpl<UserDTO, UserDAOInt> implem
 
 		UserDTO dto = findByLoginId(loginId, null);
 		if (dto != null) {
-
 			UserContext userContext = new UserContext(dto);
-
 			if (password.equals(dto.getPassword())) {
 				dto.setLastLogin(new Timestamp((new Date()).getTime()));
 				dto.setUnsucessfullLoginAttempt(0);
@@ -113,6 +111,7 @@ public class UserServiceImpl extends BaseServiceImpl<UserDTO, UserDAOInt> implem
 		userContext.setOrgId(0L);
 		userContext.setOrgName("root");
 
+		
 		if (dto == null) {
 			return null;
 		}
@@ -122,12 +121,13 @@ public class UserServiceImpl extends BaseServiceImpl<UserDTO, UserDAOInt> implem
 
 		HashMap<String, String> params = new HashMap<String, String>();
 		params.put("user", dto.getFirstName() + " " + dto.getLastName());
-		System.out.println(dto.getFirstName() + dto.getLastName());
-
+		System.out.println(dto.getFirstName()+ dto.getLastName());
+		
 		params.put("password", dto.getPassword());
 		System.out.println(dto.getPassword());
 		emailDTO.setMessageCode("U-FP", params);
 
+		
 		emailService.send(emailDTO, null);
 
 		return dto;
@@ -163,10 +163,12 @@ public class UserServiceImpl extends BaseServiceImpl<UserDTO, UserDAOInt> implem
 		return dto;
 	}
 
+	
+
 	@Override
 	public UserDTO findByEmail(String email, UserContext userContext) {
 		return userDAO.findByEmail("email", email, userContext);
-
+		
 	}
 
 }

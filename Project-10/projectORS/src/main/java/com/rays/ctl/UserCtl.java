@@ -71,18 +71,17 @@ public class UserCtl extends BaseCtl<UserForm, UserDTO, UserServiceInt> {
 		ORSResponse res = new ORSResponse(true);
 		HttpSession session = req.getSession();
 		session.invalidate();
-		if(session==null) {
+		if (session == null) {
 			res.setSuccess(false);
 			res.addMessage("Logout Successfully");
-			
+
 		}
 		System.out.println("executed logout");
-		System.out.println(session.getId()+"-------sessionId");
-		//res.addResult("roleList", list);
+		System.out.println(session.getId() + "-------sessionId");
+		// res.addResult("roleList", list);
 		return res;
 	}
 
-	
 	/*
 	 * @GetMapping("logout") public ORSResponse logout(HttpServletRequest request,
 	 * HttpServletResponse response) { System.out.println("logout runnnnn");
@@ -137,14 +136,11 @@ public class UserCtl extends BaseCtl<UserForm, UserDTO, UserServiceInt> {
 	public ORSResponse changePassword(@RequestBody @Valid ChangePasswordForm form, BindingResult bindingResult) {
 		System.out.println("Inside changepassword in userctl");
 
-		
 		ORSResponse res = validate(bindingResult);
 
 		if (!res.isSuccess()) {
 			return res;
 		}
-
-		
 
 		UserDTO changedDto = baseService.changePassword(form.getLoginId(), form.getOldPassword(), form.getNewPassword(),
 				userContext);

@@ -36,8 +36,6 @@ public class RoleDAOImpl extends BaseDAOImpl<RoleDTO> implements RoleDAOInt {
 		}
 
 		if (!isEmptyString(dto.getStatus())) {
-			
-			System.out.println("is status.....!!!!!!!!!!");
 
 			whereCondition.add(builder.equal(qRoot.get("status"), dto.getStatus()));
 		}

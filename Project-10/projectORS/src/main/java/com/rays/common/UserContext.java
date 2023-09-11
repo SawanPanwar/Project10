@@ -25,7 +25,7 @@ public class UserContext {
 	}
 
 	public UserContext(UserDTO dto) {
-		System.out.println("in user service before user context");
+
 		this.userDTO = dto;
 		this.loginId = dto.getLoginId();
 		this.name = dto.getName();
@@ -34,8 +34,14 @@ public class UserContext {
 		this.roleName = dto.getRoleName();
 		this.userId = dto.getId();
 
-		System.out.println("----Inside User Context----Name :: " + name + " -----loginID :: " + loginId);
-		System.out.println("in user service after user context");
+		System.out.println("----Inside User Context----Name :: " + name + " -----loginID :: " +loginId);
+		
+		/*
+		 * if (roles == null && userDTO != null) { roles = new
+		 * HashSet<String>(); Iterator<UserRoleDTO> it =
+		 * userDTO.getUserRoles().iterator(); while (it.hasNext()) {
+		 * roles.add(it.next().getRoleName()); } }
+		 */
 
 	}
 

@@ -18,48 +18,43 @@ import com.rays.dto.UserDTO;
  */
 public class UserForm extends BaseForm {
 
-	@NotEmpty(message= "please enter first name")
+	@NotEmpty(message = "please enter first name")
 	private String firstName;
 
-	@NotEmpty(message= "please enter last name")
+	@NotEmpty(message = "please enter last name")
 	private String lastName;
 
-	@NotEmpty(message= "please enter loginId")
+	@NotEmpty(message = "please enter loginId")
 	private String loginId;
-	
-	@NotEmpty(message= "please enter password")
+
+	@NotEmpty(message = "please enter password")
 	private String password;
-	
-	
+
 	@Email
 	private String email;
-	
-	@NotNull(message= "please enter status")
+
+	@NotNull(message = "please enter status")
 	private String status;
 
-	
 	private String roleName = null;
 
-	@NotNull(message= "please enter roll")
+	@NotNull(message = "please enter roll")
 	@Min(1)
 	private Long roleId;
-	
-	@NotNull(message= "please enter phone")
-	@Pattern(regexp="(^$|[0-9]{10})")
+
+	@NotNull(message = "please enter phone")
+	@Pattern(regexp = "(^$|[0-9]{10})")
 	private String phone;
 
-	@NotNull(message= "please enter alternate phone")
+	@NotNull(message = "please enter alternate phone")
 	private String alternateMobile;
-
 
 	private Date dob;
 
-	@NotNull(message= "please enter gender")
+	@NotNull(message = "please enter gender")
 	private String gender;
 
-	
-	
-	private String imageId;
+	private Long imageId;
 
 	public String getFirstName() {
 		return firstName;
@@ -157,11 +152,11 @@ public class UserForm extends BaseForm {
 		this.gender = gender;
 	}
 
-	public String getImageId() {
+	public Long getImageId() {
 		return imageId;
 	}
 
-	public void setImageId(String imageId) {
+	public void setImageId(Long imageId) {
 		this.imageId = imageId;
 	}
 
@@ -189,10 +184,8 @@ public class UserForm extends BaseForm {
 		dto.setGender(gender);
 		dto.setPhone(phone);
 		dto.setStatus(status);
-		/* dto.setImageId(imageId); */
+		dto.setImageId(imageId);
 		return dto;
 	}
-	
-	
 
 }

@@ -29,6 +29,7 @@ import org.springframework.web.multipart.MultipartFile;
 import com.rays.common.BaseCtl;
 import com.rays.common.MenuItem;
 import com.rays.common.ORSResponse;
+import com.rays.common.SpringResponse;
 import com.rays.common.UserContext;
 import com.rays.common.attachment.AttachmentDTO;
 import com.rays.common.attachment.AttachmentServiceInt;
@@ -103,29 +104,80 @@ public class LoginCtl extends BaseCtl<UserForm, UserDTO, UserServiceInt> {
 		} else {
 			UserContext context = new UserContext(dto);
 
+			/* session.setAttribute("userContext", context); */
+			/* session.setAttribute("test", dto.getFirstName()); */
+
 			res.setSuccess(true);
 			res.addData(dto);
+			/* res.addResult("jsessionid", session.getId()); */
 			res.addResult("loginId", dto.getLoginId());
 			res.addResult("role", dto.getRoleName());
 			res.addResult("fname", dto.getFirstName());
 			res.addResult("lname", dto.getLastName());
 
+			/* System.out.println("jsessionid " + session.getId()); */
 			System.out.println("Before calling userDetail authenticate");
 
 			final UserDetails userDetails = jwtService.loadUserByUsername(form.getLoginId());
 
-			System.out.println("after calling userDetail authenticate");
-
 			final String token = jwtTokenUtil.generateToken(userDetails);
 
-			System.out.println("after generate token");
-
 			res.addResult("token", token);
-			
 			return res;
 
 		}
 
+		return res;
+	}
+
+	@PostMapping("log")
+	public SpringResponse log(@RequestBody @Valid LoginForm form, BindingResult bindingResult, HttpSession session,
+			HttpServletRequest request) throws Exception {
+
+		SpringResponse sr = valid(bindingResult);
+
+		if (!sr.isSucc()) {
+			return sr;
+		}
+
+		UserDTO dto = baseService.authenticate(form.getLoginId(), form.getPassword());
+		if (dto == null) {
+			System.out.println("dto == null ");
+			sr.setSucc(false);
+			sr.addMessage("Invalid ID or Password");
+		} else {
+			UserContext context = new UserContext(dto);
+
+			sr.setSucc(true);
+			sr.addData(dto);
+			sr.addResult("loginId", dto.getLoginId());
+			sr.addResult("role", dto.getRoleName());
+			sr.addResult("fname", dto.getFirstName());
+			sr.addResult("lname", dto.getLastName());
+
+			System.out.println("Before calling userDetail authenticate");
+
+			final UserDetails userDetails = jwtService.loadUserByUsername(form.getLoginId());
+
+			final String token = jwtTokenUtil.generateToken(userDetails);
+
+			sr.addResult("token", token);
+			return sr;
+
+		}
+
+		return sr;
+	}
+
+	@PostMapping("logout")
+	public ORSResponse logout(HttpSession session, HttpServletRequest request) throws Exception {
+
+		ORSResponse res = new ORSResponse();
+		session = request.getSession();
+		session.invalidate();
+
+		res.setSuccess(false);
+		res.addMessage("Logout Successfully");
 		return res;
 	}
 

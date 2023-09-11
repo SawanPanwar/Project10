@@ -26,6 +26,8 @@ public abstract class BaseDAOImpl<T extends BaseDTO> implements BaseDAOInt<T> {
 
 	public void setEntityManager(EntityManager entityManager) {
 		this.entityManager = entityManager;
+		// this.sessionFactory =
+		// entityManager.getEntityManagerFactory().unwrap(SessionFactory.class);
 	}
 
 	/**
@@ -57,13 +59,12 @@ public abstract class BaseDAOImpl<T extends BaseDTO> implements BaseDAOInt<T> {
 
 		TypedQuery<T> query = entityManager.createQuery(cq);
 
-		System.out.println(" find by uniq key method>>>>>>>>>>>>>>");
-
 		List<T> list = query.getResultList();
 
 		T dto = null;
 
 		if (list.size() > 0) {
+			System.out.println("><><><><><><><><><><><>" + list.get(0));
 			dto = list.get(0);
 		}
 
@@ -72,7 +73,6 @@ public abstract class BaseDAOImpl<T extends BaseDTO> implements BaseDAOInt<T> {
 	}
 
 	public T findByPK(long pk, UserContext userContext) {
-		System.out.println("in base dao find by pk");
 		T dto = entityManager.find(getDTOClass(), pk);
 		return dto;
 	}
@@ -100,8 +100,6 @@ public abstract class BaseDAOImpl<T extends BaseDTO> implements BaseDAOInt<T> {
 
 		// Create where conditions
 		List<Predicate> whereClause = getWhereClause(dto, builder, qRoot);
-
-		System.out.println("where clause = " + whereClause);
 
 		// Put organization filter
 		if (dto.isGroupFilter()) {
@@ -146,18 +144,7 @@ public abstract class BaseDAOImpl<T extends BaseDTO> implements BaseDAOInt<T> {
 			query.setMaxResults(pageSize);
 		}
 
-		System.out.println("query bn gai......");
 		List list = query.getResultList();
-
-		if (list.size() == 0) {
-
-			System.out.println("list is null");
-
-		} else {
-
-			System.out.println("list is not nulll");
-
-		}
 
 		return list;
 	}
@@ -223,15 +210,13 @@ public abstract class BaseDAOImpl<T extends BaseDTO> implements BaseDAOInt<T> {
 	 */
 	public void update(T dto, UserContext userContext) {
 
-		System.out.println("in base dao imp update entry");
-
 		dto.setModifiedBy(userContext.getLoginId());
 		dto.setModifiedDatetime(new Timestamp(new Date().getTime()));
 
 		populate(dto, userContext);
 
 		entityManager.merge(dto);
-		System.out.println("in base dao imp update exit");
+
 	}
 
 	/**

@@ -20,7 +20,7 @@ import com.rays.dto.UserDTO;
 /**
  * Contains User CRUD operations
  * 
- * @author Vineet Goyel
+ * @author Sawan Panwar
  *
  */
 @Repository
@@ -40,6 +40,11 @@ public class UserDAOImpl extends BaseDAOImpl<UserDTO> implements UserDAOInt {
 		if (!isEmptyString(dto.getFirstName())) {
 
 			whereCondition.add(builder.like(qRoot.get("firstName"), dto.getFirstName() + "%"));
+		}
+
+		if (!isEmptyString(dto.getLastName())) {
+
+			whereCondition.add(builder.like(qRoot.get("lastName"), dto.getLastName() + "%"));
 		}
 
 		if (!isEmptyString(dto.getRoleName())) {
@@ -65,10 +70,6 @@ public class UserDAOImpl extends BaseDAOImpl<UserDTO> implements UserDAOInt {
 			whereCondition.add(builder.equal(qRoot.get("roleId"), dto.getRoleId()));
 		}
 
-		
-
-		
-
 		if (isNotNull(dto.getDob())) {
 
 			whereCondition.add(builder.equal(qRoot.get("dob"), dto.getDob()));
@@ -85,7 +86,7 @@ public class UserDAOImpl extends BaseDAOImpl<UserDTO> implements UserDAOInt {
 		if (dto.getRoleId() != null && dto.getRoleId() > 0) {
 			RoleDTO roleDto = roleDao.findByPK(dto.getRoleId(), userContext);
 			dto.setRoleName(roleDto.getName());
-			System.out.println(dto.getRoleName()+"RoleNAMe-------");
+			System.out.println(dto.getRoleName() + "RoleNAMe-------");
 		}
 	}
 
@@ -94,30 +95,30 @@ public class UserDAOImpl extends BaseDAOImpl<UserDTO> implements UserDAOInt {
 		Class<UserDTO> dtoClass = getDTOClass();
 
 		CriteriaBuilder builder = entityManager.getCriteriaBuilder();
-		System.out.println(val+"----->>>>>userDao");
+		System.out.println(val + "----->>>>>userDao");
 		CriteriaQuery<UserDTO> cq = builder.createQuery(dtoClass);
 
 		Root<UserDTO> qRoot = cq.from(dtoClass);
 
 		Predicate condition = builder.equal(qRoot.get(attribute), val);
-		
+
 		if (userContext != null && !isZeroNumber(userContext.getOrgId())) {
 			Predicate conditionGrp = builder.equal(qRoot.get("orgId"), userContext.getOrgId());
 			cq.where(condition, conditionGrp);
 		} else {
 			cq.where(condition);
 		}
-		System.out.println(cq+"Query created in user dao");
+		System.out.println(cq + "Query created in user dao");
 		TypedQuery<UserDTO> query = entityManager.createQuery(cq);
-		
+
 		List<UserDTO> list = query.getResultList();
-		System.out.println(list.get(0)+"list------");
-		
+		System.out.println(list.get(0) + "list------");
+
 		UserDTO dto = null;
 
 		if (list.size() > 0) {
 			dto = list.get(0);
-			System.out.println(dto.getLoginId()+"Login iid get from db in userDao");
+			System.out.println(dto.getLoginId() + "Login iid get from db in userDao");
 		}
 		System.out.println("going to return dto");
 		return dto;

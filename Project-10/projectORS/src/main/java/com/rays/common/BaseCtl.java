@@ -23,12 +23,11 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import com.rays.dto.MarksheetDTO;
 import com.rays.dto.UserDTO;
-import com.rays.form.UserForm;
 
 /**
  * Base controller class contains get, search, save, delete REST APIs
  * 
- * Author Vineet Goyel
+ * Author Sawan Panwar
  */
 public abstract class BaseCtl<F extends BaseForm, T extends BaseDTO, S extends BaseServiceInt<T>> {
 
@@ -161,6 +160,7 @@ public abstract class BaseCtl<F extends BaseForm, T extends BaseDTO, S extends B
 //			}
 
 			res.addData(baseService.search(dto, Integer.parseInt(pageNo), pageSize, userContext));
+			res.addNextData(baseService.search(dto, Integer.parseInt(pageNo + 1), pageSize, userContext));
 			res.setSuccess(true);
 			res.addMessage("Records Deleted Successfully");
 			System.out.println("Records Deleted Successfully");
@@ -275,6 +275,27 @@ public abstract class BaseCtl<F extends BaseForm, T extends BaseDTO, S extends B
 			res.addInputErrors(errors);
 		}
 		return res;
+
+	}
+
+	public SpringResponse valid(BindingResult bindingResult) {
+		SpringResponse sr = new SpringResponse(true);
+		System.out.println("inside the validate method of baseCtl");
+		if (bindingResult.hasErrors()) {
+
+			sr.setSucc(false);
+
+			Map<String, String> errors = new HashMap<String, String>();
+
+			List<FieldError> list = bindingResult.getFieldErrors();
+			// Lambda expression Java 8 feature
+			list.forEach(e -> {
+				errors.put(e.getField(), e.getDefaultMessage());
+				System.out.println("Field :: " + e.getField() + "  Message :: " + e.getDefaultMessage());
+			});
+			sr.addInputErrors(errors);
+		}
+		return sr;
 
 	}
 

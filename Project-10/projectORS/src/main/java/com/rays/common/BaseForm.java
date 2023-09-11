@@ -2,7 +2,7 @@ package com.rays.common;
 
 /**
  * Contains generic attributes of a form. It is extended by all form beans.
- * Author Vineet Goyel
+ * Author Sawan Panwar
  */
 
 public class BaseForm {
@@ -138,7 +138,7 @@ public class BaseForm {
 	 */
 	public <T extends BaseDTO> T initDTO(T dto) {
 		if (id != null && id > 0) {
-		dto.setId(id);
+			dto.setId(id);
 		} else {
 			dto.setId(null);
 		}

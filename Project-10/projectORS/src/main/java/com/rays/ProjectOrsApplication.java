@@ -33,7 +33,6 @@ public class ProjectOrsApplication extends SpringBootServletInitializer {
 	 * @return
 	 */
 	@Bean
-
 	public WebMvcConfigurer corsConfigurer() {
 
 		WebMvcConfigurer w = new WebMvcConfigurer() {
