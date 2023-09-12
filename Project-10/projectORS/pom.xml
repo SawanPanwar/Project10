@@ -73,10 +73,11 @@
 			<artifactId>spring-session-jdbc</artifactId> </dependency> -->
 		<!-- https://mvnrepository.com/artifact/net.sf.jasperreports/jasperreports -->
 		<dependency>
-			<groupId>net.sf.jasperreports</groupId>
-			<artifactId>jasperreports</artifactId>
-			<version>6.11.0</version>
-		</dependency>
+    <groupId>net.sf.jasperreports</groupId>
+    <artifactId>jasperreports</artifactId>
+    <version>7.2.0</version> <!-- The updated version -->
+</dependency>
+
 
 		<dependency>
 			<groupId>log4j</groupId>
